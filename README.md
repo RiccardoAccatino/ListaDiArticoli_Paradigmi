@@ -1,0 +1,1 @@
+# ListaDiArticoli_Paradigmi
