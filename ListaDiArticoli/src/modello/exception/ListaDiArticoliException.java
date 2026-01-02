@@ -1,5 +1,12 @@
 package modello.exception;
 
-public class ListaDiArticoliException {
-
+public class ListaDiArticoliException extends Exception {
+    
+    public ListaDiArticoliException(String message) {
+        super(message);
+    }
+    
+    public ListaDiArticoliException() {
+        super();
+    }
 }
