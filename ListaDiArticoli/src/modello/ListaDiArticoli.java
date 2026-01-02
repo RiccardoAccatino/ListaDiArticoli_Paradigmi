@@ -108,7 +108,6 @@ public class ListaDiArticoli {
         this.nome = nome;
     }
     
-    // Metodi getter utili per i test
     public int getNumeroArticoliValidi() {
         return listaValidi.size();
     }
