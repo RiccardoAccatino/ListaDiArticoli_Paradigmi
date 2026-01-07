@@ -10,7 +10,8 @@ public class GestioneListe {
     private static ArrayList<Articolo> articoli = new ArrayList<>();
     private static ArrayList<String> categorie = new ArrayList<>();
 
-    public static ArrayList<ListaDiArticoli> getListediarticoli() {
+
+	public static ArrayList<ListaDiArticoli> getListediarticoli() {
         return listediarticoli;
     }
 

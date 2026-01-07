@@ -1,8 +1,33 @@
 package modello;
 
+import java.util.Objects;
+
 import modello.exception.ArticoloException;
 
 public class Articolo {
+	@Override
+	public String toString() {
+		return "Articolo [nome=" + nome + ", prezzo=" + prezzo + ", categoria=" + categoria + ", nota=" + nota + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(categoria, nome, nota, prezzo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Articolo other = (Articolo) obj;
+		return Objects.equals(categoria, other.categoria) && Objects.equals(nome, other.nome)
+				&& Objects.equals(nota, other.nota) && prezzo == other.prezzo;
+	}
+
 	private String nome = "";
 	private int prezzo = 0;
 	private String categoria = "Non categorizzato";

@@ -21,7 +21,7 @@ class ArticoloTest {
         Articolo a = new Articolo("Pane", 200);
         assertEquals("Pane", a.getNome());
         assertEquals(200, a.getPrezzo());
-        assertEquals("Non categorizzato", a.getCategoria()); // Valore di default
+        assertEquals("Non categorizzato", a.getCategoria());
     }
 
     @Test

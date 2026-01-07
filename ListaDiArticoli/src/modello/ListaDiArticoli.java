@@ -2,11 +2,37 @@ package modello;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
+
 import modello.exception.ArticoloException;
 import modello.exception.ListaDiArticoliException;
 
 public class ListaDiArticoli {
-    private String nome = "";
+    @Override
+	public String toString() {
+		return "ListaDiArticoli [nome=" + nome + ", listaValidi=" + listaValidi + ", listaCancellati=" + listaCancellati
+				+ "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(listaCancellati, listaValidi, nome);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ListaDiArticoli other = (ListaDiArticoli) obj;
+		return Objects.equals(listaCancellati, other.listaCancellati) && Objects.equals(listaValidi, other.listaValidi)
+				&& Objects.equals(nome, other.nome);
+	}
+
+	private String nome = "";
     private ArrayList<Articolo> listaValidi;
     private ArrayList<Articolo> listaCancellati;
 
