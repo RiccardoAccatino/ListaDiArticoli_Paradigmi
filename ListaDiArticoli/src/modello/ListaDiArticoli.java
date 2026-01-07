@@ -53,7 +53,7 @@ public class ListaDiArticoli {
             }
         }
 
-        if (!trovato) {
+        if (trovato==false) {
             throw new ListaDiArticoliException("Impossibile rimuovere: Articolo non trovato nella lista (" + nome + ")");
         }
     }
@@ -72,7 +72,7 @@ public class ListaDiArticoli {
             }
         }
 
-        if (!trovato) {
+        if (trovato==false) {
             throw new ListaDiArticoliException("Impossibile ripristinare: Articolo non presente nel cestino (" + nome + ")");
         }
     }
