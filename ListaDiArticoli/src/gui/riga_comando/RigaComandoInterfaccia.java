@@ -55,6 +55,10 @@ public class RigaComandoInterfaccia {
 
 	private void CrezioneLista() {
 		
+		String nome="";
+		nome= input.readString("Inserisci il nome dell lista che desideri creare=");
+		gestor.createListaDiArticoli(nome);
 		
+		Menu();
 	}
 }
