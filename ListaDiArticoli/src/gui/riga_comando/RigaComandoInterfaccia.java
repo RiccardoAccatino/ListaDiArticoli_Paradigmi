@@ -1,8 +1,11 @@
 package gui.riga_comando;
 import jbook.util.Input;
+import modello.Articolo;
 import modello.GestioneListe;
+import modello.ListaDiArticoli;
 import modello.exception.ArticoloException;
 import modello.exception.GestioneListeException;
+import modello.exception.ListaDiArticoliException;
 public class RigaComandoInterfaccia {
 	private Input input;
 	public RigaComandoInterfaccia()
@@ -43,7 +46,7 @@ public class RigaComandoInterfaccia {
 
 	private void AggiuntaCategoria() {
 		String nome="";
-		nome= input.readString("|Inserisci il nome della categoriaa che desideri creare=");
+		nome= input.readString("Inserisci il nome della categoriaa che desideri creare=");
 		try{
 			GestioneListe.createCategoria(nome);
 		}catch(GestioneListeException e)
@@ -57,7 +60,7 @@ public class RigaComandoInterfaccia {
 
 	private void AggiuntaProdotto() throws ArticoloException {
 		String nome="";
-		nome= input.readString("|Inserisci il nome del prodotto che desideri creare=");
+		nome= input.readString("Inserisci il nome del prodotto che desideri creare=");
 		try{
 			GestioneListe.createArticolo(nome);
 		}catch(GestioneListeException e)
@@ -84,51 +87,105 @@ public class RigaComandoInterfaccia {
 		sc=input.readInt("|Inserisci=");
 		System.out.println("-----------------------------------------");
 		if(sc==1)
-			AggiungiProdottoAllaLista();
+			AggiungiProdottoAllaLista(nomeLis);
 		else if(sc==2)
-			CercaProdottoNellaLista();
+			CercaProdottoNellaLista(nomeLis);
 		else if(sc==3)
-			SpostaProdottoDallaLista();
+			SpostaProdottoDallaLista(nomeLis);
 		else if(sc==4)
-			RipristinaProdotto();
+			RipristinaProdotto(nomeLis);
 		else if(sc==5)
-			SvuotaCesto();
+			SvuotaCesto(nomeLis);
 		else if(sc==6)
 			Menu();
 		else
 			MenuLista();
 	}
 
-	private void SvuotaCesto() {
-		// TODO Auto-generated method stub
-		
+	private void SvuotaCesto(String nomeLista) {
+		ListaDiArticoli lista = trovaLista(nomeLista);
+		if (lista != null) {
+			String conferma = input.readString("Sei sicuro di voler svuotare il cestino? (s/n): ");
+			if (conferma.equalsIgnoreCase("s")) {
+				lista.svuotaCestino();
+				System.out.println("Cestino svuotato.");
+			} else {
+				System.out.println("Operazione annullata.");
+			}
+		}
+		MenuLista();
 	}
 
-	private void RipristinaProdotto() {
-		// TODO Auto-generated method stub
-		
+	private void RipristinaProdotto(String nomeLista) {
+		ListaDiArticoli lista = trovaLista(nomeLista);
+		if (lista != null) {
+			String nomeArticolo = input.readString("Inserisci il nome dell'articolo da ripristinare: ");
+			try {
+				lista.ripristina(nomeArticolo);
+				System.out.println("Articolo '" + nomeArticolo + "' ripristinato con successo.");
+			} catch (ListaDiArticoliException e) {
+				System.out.println("Errore: " + e.getMessage());
+			}
+		}
+		MenuLista();
 	}
 
-	private void SpostaProdottoDallaLista() {
-		// TODO Auto-generated method stub
-		
+	private void SpostaProdottoDallaLista(String nomeLista) {
+		ListaDiArticoli lista = trovaLista(nomeLista);
+		if (lista != null) {
+			String nomeArticolo = input.readString("Inserisci il nome dell'articolo da cestinare: ");
+			try {
+				lista.removeArticolo(nomeArticolo);
+				System.out.println("Articolo '" + nomeArticolo + "' spostato nel cestino.");
+			} catch (ListaDiArticoliException e) {
+				System.out.println("Errore: " + e.getMessage());
+			}
+		}
+		MenuLista();
 	}
 
-	private void CercaProdottoNellaLista() {
-		// TODO Auto-generated method stub
-		
+	private void CercaProdottoNellaLista(String nomeLista) {
+		ListaDiArticoli lista = trovaLista(nomeLista);
+		if (lista != null) {
+			String ricerca = input.readString("Inserisci il nome (o parte del nome) da cercare: ");
+			Articolo trovato = lista.searchArticolo(ricerca);
+			
+			if (trovato != null) {
+				System.out.println("Articolo trovato: " + trovato.toString());
+			} else {
+				System.out.println("Nessun articolo trovato con: " + ricerca);
+			}
+		}
+		MenuLista();
 	}
-
-	private void AggiungiProdottoAllaLista() {
-		String prd="";
-		prd=input.readString("Inserisci il nome del prodotto che vuoi aggiungere lla lista=");
-		
+    private ListaDiArticoli trovaLista(String nomeLista) {
+        for (ListaDiArticoli lista : GestioneListe.getListediarticoli()) {
+            if (lista.getNome().equals(nomeLista)) {
+                return lista;
+            }
+        }
+        System.out.println("Attenzione: Lista '" + nomeLista + "' non trovata.");
+        return null;
+    }
+    private void AggiungiProdottoAllaLista(String nomeLista) {
+		ListaDiArticoli lista = trovaLista(nomeLista);
+		if (lista != null) {
+			String prd = input.readString("Inserisci il nome del prodotto che vuoi aggiungere alla lista = ");
+			
+			try {
+				lista.addArticolo(prd);
+				System.out.println("Prodotto '" + prd + "' aggiunto con successo alla lista '" + nomeLista + "'.");
+			} catch (ArticoloException e) {
+				System.out.println("Errore: " + e.getMessage());
+			}
+		}
+		MenuLista();
 	}
 
 	private void CrezioneLista() {
 		
 		String nome="";
-		nome= input.readString("|Inserisci il nome dell lista che desideri creare=");
+		nome= input.readString("Inserisci il nome dell lista che desideri creare=");
 		try{
 			GestioneListe.createListaDiArticoli(nome);
 		}catch(GestioneListeException e)
