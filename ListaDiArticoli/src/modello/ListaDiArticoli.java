@@ -141,4 +141,11 @@ public class ListaDiArticoli {
     public int getNumeroArticoliCancellati() {
         return listaCancellati.size();
     }
+    public ArrayList<Articolo> getArticoliValidi() {
+        return listaValidi;
+    }
+
+    public ArrayList<Articolo> getArticoliCancellati() {
+        return listaCancellati;
+    }
 }
