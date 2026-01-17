@@ -76,7 +76,63 @@ public class Controller implements ActionListener {
                 }
             }
         }
-        
+     // --- UPDATE (MODIFICA) ---
+        else if (comando.equals("MODIFICA")) {
+            // 1. Chiediamo quale articolo modificare
+            String nomeArticolo = JOptionPane.showInputDialog(null, "Inserisci il nome dell'articolo da modificare:");
+            
+            if (nomeArticolo != null && !nomeArticolo.trim().isEmpty()) {
+                // Cerchiamo l'articolo per verificare che esista prima di chiedere i dati
+                Articolo art = model.searchArticolo(nomeArticolo);
+                
+                // Verifichiamo che esista e non sia nel cestino (opzionale, ma buona prassi)
+                if (art != null && !model.getArticoliCancellati().contains(art)) {
+                    
+                    // 2. Chiediamo cosa modificare. Per semplicità usiamo un dialog con opzioni
+                    String[] opzioni = {"Prezzo", "Categoria", "Nota"};
+                    int scelta = JOptionPane.showOptionDialog(null, 
+                        "Cosa vuoi modificare di " + art.getNome() + "?", 
+                        "Modifica Articolo",
+                        JOptionPane.DEFAULT_OPTION, 
+                        JOptionPane.QUESTION_MESSAGE, 
+                        null, opzioni, opzioni[0]);
+
+                    try {
+                        switch (scelta) {
+                            case 0: // Prezzo
+                                String nuovoPrezzoStr = JOptionPane.showInputDialog("Nuovo prezzo (Attuale: " + art.getPrezzo() + "):");
+                                if (nuovoPrezzoStr != null) {
+                                    int nuovoPrezzo = Integer.parseInt(nuovoPrezzoStr);
+                                    // Usiamo il metodo del modello per modificare
+                                    model.modificaArticolo(nomeArticolo, nuovoPrezzo, art.getCategoria(), art.getNota());
+                                }
+                                break;
+                            case 1: // Categoria
+                                 String nuovaCat = JOptionPane.showInputDialog("Nuova categoria (Attuale: " + art.getCategoria() + "):");
+                                 if (nuovaCat != null) {
+                                     model.modificaArticolo(nomeArticolo, art.getPrezzo(), nuovaCat, art.getNota());
+                                 }
+                                break;
+                            case 2: // Nota
+                                String nuovaNota = JOptionPane.showInputDialog("Nuova nota (Attuale: " + art.getNota() + "):");
+                                if (nuovaNota != null) {
+                                    model.modificaArticolo(nomeArticolo, art.getPrezzo(), art.getCategoria(), nuovaNota);
+                                }
+                                break;
+                        }
+                        // 3. Aggiorniamo la vista
+                        view.updateView(); 
+                        
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Il prezzo deve essere un numero intero!");
+                    } catch (Exception ex) { // Cattura ArticoloException o ListaDiArticoliException
+                        JOptionPane.showMessageDialog(null, "Errore: " + ex.getMessage());
+                    }
+                } else {
+                     JOptionPane.showMessageDialog(null, "Articolo non trovato o presente nel cestino.");
+                }
+            }
+        }
         // --- RIMOZIONE ---
         else if (comando.equals("RIMUOVI")) {
             String nome = JOptionPane.showInputDialog("Nome articolo da cestinare:");
