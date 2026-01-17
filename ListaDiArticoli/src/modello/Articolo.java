@@ -1,10 +1,11 @@
 package modello;
 
+import java.io.Serializable;
 import java.util.Objects;
-
 import modello.exception.ArticoloException;
 
-public class Articolo {
+public class Articolo implements Serializable {
+    private static final long serialVersionUID = 1L;
 	@Override
 	public String toString() {
 		return "Articolo [nome=" + nome + ", prezzo=" + prezzo + ", categoria=" + categoria + ", nota=" + nota + "]";

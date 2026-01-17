@@ -1,13 +1,15 @@
 package modello;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
-
 import modello.exception.ArticoloException;
 import modello.exception.ListaDiArticoliException;
 
-public class ListaDiArticoli {
+public class ListaDiArticoli implements Serializable {
+    private static final long serialVersionUID = 1L; 
+
     @Override
 	public String toString() {
 		return "ListaDiArticoli [nome=" + nome + ", listaValidi=" + listaValidi + ", listaCancellati=" + listaCancellati
@@ -125,7 +127,37 @@ public class ListaDiArticoli {
         }
         return target;
     }
+    
+    public void modificaArticolo(String nomeArticolo, int nuovoPrezzo, String nuovaCategoria, String nuovaNota) 
+            throws ListaDiArticoliException, ArticoloException {
+        
+        Articolo articolo = searchArticolo(nomeArticolo);
+        
+        if (articolo == null || listaCancellati.contains(articolo)) {
+            throw new ListaDiArticoliException("Impossibile modificare: Articolo non trovato o nel cestino (" + nomeArticolo + ")");
+        }
 
+        if (nuovoPrezzo >= 0) {
+            articolo.setPrezzo(nuovoPrezzo);
+        }
+        if (nuovaCategoria != null && !nuovaCategoria.isBlank()) {
+            articolo.setCategoria(nuovaCategoria);
+        }
+        if (nuovaNota != null) {
+            articolo.setNota(nuovaNota);
+        }
+    }
+    
+    public ArrayList<Articolo> cercaPerCategoria(String categoria) {
+        ArrayList<Articolo> risultati = new ArrayList<>();
+        for (Articolo a : listaValidi) {
+            if (a.getCategoria().equalsIgnoreCase(categoria)) {
+                risultati.add(a);
+            }
+        }
+        return risultati;
+    }
+    
     public String getNome() {
         return nome;
     }

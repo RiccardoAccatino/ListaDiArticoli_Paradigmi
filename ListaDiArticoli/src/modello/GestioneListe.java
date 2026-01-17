@@ -1,5 +1,5 @@
 package modello;
-
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import modello.exception.ArticoloException;
@@ -128,6 +128,23 @@ public class GestioneListe {
 
         if (trovato==false) {
             throw new GestioneListeException("Impossibile rimuovere: Articolo non trovato nel catalogo (" + nome + ")");
+        }
+    }
+    public static void salvaDati(String percorsoFile) throws IOException {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(percorsoFile))) {
+            out.writeObject(listediarticoli);
+            out.writeObject(articoli);
+            out.writeObject(categorie);
+        }
+    }
+
+    
+    @SuppressWarnings("unchecked")
+    public static void caricaDati(String percorsoFile) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(percorsoFile))) {
+            listediarticoli = (ArrayList<ListaDiArticoli>) in.readObject();
+            articoli = (ArrayList<Articolo>) in.readObject();
+            categorie = (ArrayList<String>) in.readObject();
         }
     }
 }
