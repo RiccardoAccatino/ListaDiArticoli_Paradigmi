@@ -172,14 +172,21 @@ public class MenuPrincipale extends JFrame implements ActionListener {
      * Apre la finestra di dettaglio per la lista selezionata.
      */
     private void apriListaSelezionata() {
-        String nomeSelezionato = listaGrafica.getSelectedValue();
+    	String nomeSelezionato = listaGrafica.getSelectedValue();
         if (nomeSelezionato == null) {
             JOptionPane.showMessageDialog(this, "Seleziona una lista da aprire.");
             return;
         }
         for(ListaDiArticoli l : GestioneListe.getListediarticoli()) {
             if(l.getNome().equals(nomeSelezionato)) {
-                new SchermataLista(l);
+                JFrame frameDettaglio = new JFrame("Dettaglio Lista: " + l.getNome());
+                frameDettaglio.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+                
+                frameDettaglio.add(new SchermataLista(l));
+                
+                frameDettaglio.pack();
+                frameDettaglio.setLocationRelativeTo(null); 
+                frameDettaglio.setVisible(true);
                 break;
             }
         }

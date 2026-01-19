@@ -12,7 +12,7 @@ public class Main {
      * @param args Argomenti da riga di comando (non utilizzati).
      */
 	public static void main(String[] args) {
-		new RigaComandoInterfaccia();
+		new RigaComandoInterfaccia().start();
 		System.out.println("Programma terminato.");
 	}
 

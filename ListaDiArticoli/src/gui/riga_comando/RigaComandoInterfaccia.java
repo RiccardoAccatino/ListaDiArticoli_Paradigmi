@@ -83,7 +83,7 @@ public class RigaComandoInterfaccia {
         boolean inLista = true;
         while (inLista) {
             System.out.println("\n--- LISTA: " + lista.getNome() + " ---");
-            System.out.println("Totale spesa corrente: " + lista.calcolaPrezzoTotale() + " centesimi");
+            System.out.println("Totale spesa corrente: " + lista.calcolaPrezzoTotale() + "€");
             System.out.println("1. Aggiungi Articolo");
             System.out.println("2. Rimuovi Articolo");
             System.out.println("3. Visualizza Tutto (Iteratore)");
