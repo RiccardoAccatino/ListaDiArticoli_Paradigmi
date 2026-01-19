@@ -1,5 +1,6 @@
 package gui.grafica.controllo;
 import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -12,6 +13,13 @@ import modello.GestioneListe;
 import modello.ListaDiArticoli;
 import modello.exception.ArticoloException;
 import modello.exception.ListaDiArticoliException;
+/**
+ * Gestisce le interazioni dell'utente provenienti dall'interfaccia grafica (View)
+ * e aggiorna di conseguenza il modello dei dati (Model).
+ * <p>
+ * Implementa {@link ActionListener} per catturare i click sui pulsanti del {@link PannelloComandi}.
+ * </p>
+ */
 public class Controller implements ActionListener {
 
     private ListaDiArticoli model;
@@ -22,6 +30,20 @@ public class Controller implements ActionListener {
         this.view = view;
     }
 
+    /**
+    * Gestisce gli eventi scatenati dai pulsanti dell'interfaccia.
+    * <p>
+    * Comandi gestiti:
+    * <ul>
+    * <li><b>AGGIUNGI:</b> Mostra un dialog per selezionare un prodotto dal catalogo e aggiungerlo alla lista.</li>
+    * <li><b>MODIFICA:</b> Permette di modificare prezzo, categoria o nota di un articolo esistente.</li>
+    * <li><b>RIMUOVI:</b> Sposta un articolo nel cestino.</li>
+    * <li><b>RIPRISTINA:</b> Recupera un articolo dal cestino.</li>
+    * <li><b>SVUOTA:</b> Elimina definitivamente gli oggetti nel cestino.</li>
+    * </ul>
+    * </p>
+    * * @param e L'evento che ha scatenato la chiamata.
+    */
     @Override
     public void actionPerformed(ActionEvent e) {
         String comando = e.getActionCommand();

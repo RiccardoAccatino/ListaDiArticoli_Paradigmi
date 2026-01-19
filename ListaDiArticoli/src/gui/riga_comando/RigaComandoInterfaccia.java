@@ -8,7 +8,13 @@ import modello.ListaDiArticoli;
 import modello.exception.ArticoloException;
 import modello.exception.GestioneListeException;
 import modello.exception.ListaDiArticoliException;
-
+/**
+ * Fornisce un'interfaccia a riga di comando (CLI) per interagire con l'applicazione
+ * senza l'uso di finestre grafiche.
+ * <p>
+ * All'avvio tenta di caricare i dati salvati e presenta un menu testuale ciclico.
+ * </p>
+ */
 public class RigaComandoInterfaccia {
     private Input input;
     private static final String FILE_DATI = "dati_save.bin";

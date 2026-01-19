@@ -6,7 +6,16 @@ import java.util.Iterator;
 import java.util.Objects;
 import modello.exception.ArticoloException;
 import modello.exception.ListaDiArticoliException;
-
+/**
+ * Rappresenta una lista della spesa o un elenco di articoli specifico (es. "Lista Vacanze").
+ * <p>
+ * Questa classe gestisce due collezioni interne:
+ * <ul>
+ * <li><b>Lista Validi:</b> gli articoli attualmente presenti nella lista.</li>
+ * <li><b>Lista Cancellati:</b> un "cestino" temporaneo per gli articoli rimossi, permettendo il ripristino.</li>
+ * </ul>
+ * </p>
+ */
 public class ListaDiArticoli implements Serializable {
     private static final long serialVersionUID = 1L; 
 
@@ -64,6 +73,11 @@ public class ListaDiArticoli implements Serializable {
         listaValidi.add(nuovoArticolo);
     }
 
+    /**
+     * Rimuove un articolo dalla lista attiva e lo sposta nel cestino (lista cancellati).
+     * * @param nome Il nome dell'articolo da rimuovere.
+     * @throws ListaDiArticoliException Se l'articolo non viene trovato nella lista attiva.
+     */
  
     public void removeArticolo(String nome) throws ListaDiArticoliException {
         boolean trovato = false;
@@ -86,6 +100,11 @@ public class ListaDiArticoli implements Serializable {
         }
     }
 
+    /**
+     * Ripristina un articolo precedentemente spostato nel cestino, riportandolo nella lista attiva.
+     * * @param nome Il nome dell'articolo da recuperare.
+     * @throws ListaDiArticoliException Se l'articolo non è presente nel cestino.
+     */
     public void ripristina(String nome) throws ListaDiArticoliException {
         boolean trovato = false;
         
@@ -108,6 +127,12 @@ public class ListaDiArticoli implements Serializable {
     public void svuotaCestino() {
         listaCancellati.clear();
     }
+    
+    /**
+     * Cerca un articolo sia nella lista attiva che nel cestino tramite una stringa parziale (prefisso).
+     * * @param prefisso La parte iniziale o il nome completo dell'articolo da cercare.
+     * @return L'oggetto {@link Articolo} se trovato, altrimenti null.
+     */
 
     public Articolo searchArticolo(String prefisso) {
         Articolo target = null;

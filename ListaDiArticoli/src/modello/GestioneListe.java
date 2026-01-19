@@ -4,7 +4,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import modello.exception.ArticoloException;
 import modello.exception.GestioneListeException;
-
+/**
+ * Classe statica che funge da gestore centrale (Database) per l'applicazione.
+ * <p>
+ * Mantiene in memoria:
+ * <ul>
+ * <li>Tutte le liste di articoli create.</li>
+ * <li>Il catalogo globale degli articoli disponibili.</li>
+ * <li>L'elenco delle categorie disponibili.</li>
+ * </ul>
+ * Gestisce inoltre la persistenza dei dati (salvataggio e caricamento) su file binario.
+ * </p>
+ */
 public class GestioneListe {
     private static ArrayList<ListaDiArticoli> listediarticoli = new ArrayList<>();
     private static ArrayList<Articolo> articoli = new ArrayList<>();
@@ -35,6 +46,11 @@ public class GestioneListe {
         GestioneListe.categorie = categorie;
     }
 
+    /**
+     * Crea una nuova lista di articoli vuota assicurandosi che il nome sia univoco.
+     * * @param nome Il nome della nuova lista.
+     * @throws GestioneListeException Se il nome è vuoto o esiste già una lista con lo stesso nome.
+     */
 
 
     public static void createListaDiArticoli(String nome) throws GestioneListeException {
@@ -130,6 +146,11 @@ public class GestioneListe {
             throw new GestioneListeException("Impossibile rimuovere: Articolo non trovato nel catalogo (" + nome + ")");
         }
     }
+    /**
+     * Salva l'intero stato dell'applicazione (liste, catalogo, categorie) su un file.
+     * * @param percorsoFile Il percorso del file di destinazione (es. "dati.bin").
+     * @throws IOException Se si verifica un errore durante la scrittura del file.
+     */
     public static void salvaDati(String percorsoFile) throws IOException {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(percorsoFile))) {
             out.writeObject(listediarticoli);
@@ -138,6 +159,12 @@ public class GestioneListe {
         }
     }
 
+    /**
+     * Carica lo stato dell'applicazione da un file precedentemente salvato.
+     * * @param percorsoFile Il percorso del file da leggere.
+     * @throws IOException Se c'è un errore di lettura.
+     * @throws ClassNotFoundException Se la classe degli oggetti serializzati non viene trovata.
+     */
     
     @SuppressWarnings("unchecked")
     public static void caricaDati(String percorsoFile) throws IOException, ClassNotFoundException {

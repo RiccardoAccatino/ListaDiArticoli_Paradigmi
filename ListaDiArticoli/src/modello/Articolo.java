@@ -3,6 +3,14 @@ package modello;
 import java.io.Serializable;
 import java.util.Objects;
 import modello.exception.ArticoloException;
+/**
+ * Rappresenta un singolo articolo (prodotto) all'interno del sistema.
+ * <p>
+ * Ogni articolo è caratterizzato da un nome, un prezzo, una categoria e una nota opzionale.
+ * La classe implementa {@link Serializable} per permettere il salvataggio su file.
+ * </p>
+ */
+
 
 public class Articolo implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -34,6 +42,14 @@ public class Articolo implements Serializable {
 	private String categoria = "Non categorizzato";
 	private String nota = "";
 
+	/**
+     * Costruttore completo per creare un nuovo articolo.
+     * * @param nome      Il nome dell'articolo (non può essere vuoto).
+     * @param categoria La categoria di appartenenza (es. "Alimentari").
+     * @param prezzo    Il prezzo dell'articolo in centesimi/interi (non può essere negativo).
+     * @param nota      Una nota aggiuntiva descrittiva.
+     * @throws ArticoloException Se il nome è vuoto o il prezzo è negativo.
+     */
 	public Articolo(String nome, String categoria, int prezzo, String nota) throws ArticoloException {
 		setNome(nome);
 		setPrezzo(prezzo);
@@ -71,6 +87,12 @@ public class Articolo implements Serializable {
 	public int getPrezzo() {
 		return prezzo;
 	}
+	
+	/**
+     * Imposta il prezzo dell'articolo.
+     * * @param prezzo Il nuovo prezzo (deve essere >= 0).
+     * @throws ArticoloException Se il prezzo inserito è negativo.
+     */
 
 	public void setPrezzo(int prezzo) throws ArticoloException {
 		if (prezzo < 0) {
