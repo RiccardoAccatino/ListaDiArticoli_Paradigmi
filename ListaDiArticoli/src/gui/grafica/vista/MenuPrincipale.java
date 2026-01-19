@@ -1,8 +1,12 @@
 package gui.grafica.vista;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -23,14 +27,24 @@ import modello.GestioneListe;
 import modello.ListaDiArticoli;
 import modello.exception.ArticoloException;
 import modello.exception.GestioneListeException;
+
 public class MenuPrincipale extends JFrame implements ActionListener {
 
     private DefaultListModel<String> listModel;
     private JList<String> listaGrafica;
+    private static final String FILE_DATI = "dati_save.bin";
 
     public MenuPrincipale() {
         setTitle("Gestione Liste - Menu Principale");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                salvaEdEsci();
+            }
+        });
+        
         setBounds(100, 100, 700, 450);
         setLayout(new BorderLayout());
 
@@ -53,7 +67,6 @@ public class MenuPrincipale extends JFrame implements ActionListener {
         btnApriLista.setActionCommand("APRI_LISTA");
         btnApriLista.addActionListener(this);
         
-        //TASTO ELIMINAZIONE
         JButton btnEliminaLista = new JButton("Elimina Lista Selezionata");
         btnEliminaLista.setActionCommand("ELIMINA_LISTA");
         btnEliminaLista.addActionListener(this);
@@ -80,6 +93,18 @@ public class MenuPrincipale extends JFrame implements ActionListener {
 
         add(panelBottoni, BorderLayout.EAST);
         setVisible(true);
+    }
+    
+    private void salvaEdEsci() {
+        try {
+            GestioneListe.salvaDati(FILE_DATI);
+            System.out.println("Dati salvati correttamente all'uscita della GUI.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Errore nel salvataggio: " + e.getMessage());
+        } finally {
+            System.exit(0);
+        }
     }
 
     private void aggiornaElencoListe() {

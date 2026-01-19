@@ -1,5 +1,6 @@
 package gui.riga_comando;
 
+import java.io.IOException;
 import jbook.util.Input;
 import modello.Articolo;
 import modello.GestioneListe;
@@ -10,9 +11,18 @@ import modello.exception.ListaDiArticoliException;
 
 public class RigaComandoInterfaccia {
     private Input input;
+    private static final String FILE_DATI = "dati_save.bin";
 
     public RigaComandoInterfaccia() {
         input = new Input();
+        try {
+            System.out.println("--- Caricamento dati in corso... ---");
+            GestioneListe.caricaDati(FILE_DATI);
+            System.out.println("Dati caricati con successo!");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Nessun salvataggio trovato. Verranno create nuove liste vuote.");
+        }
+        
         avviaMenuPrincipale(); 
     }
 
@@ -24,7 +34,7 @@ public class RigaComandoInterfaccia {
             System.out.println("|2-Seleziona una lista (entra nel menu lista)");
             System.out.println("|3-Aggiungi un prodotto al catalogo generale");
             System.out.println("|4-Aggiungi una categoria");
-            System.out.println("|5-Esci");
+            System.out.println("|5-Esci (Salva e Chiudi)");
             System.out.println("-----------------------------------------");
       
             try {
@@ -55,6 +65,13 @@ public class RigaComandoInterfaccia {
                     aggiuntaCategoria();
                     break;
                 case 5:
+                    System.out.println("Salvataggio in corso...");
+                    try {
+                        GestioneListe.salvaDati(FILE_DATI);
+                        System.out.println("Dati salvati correttamente in " + FILE_DATI);
+                    } catch (IOException e) {
+                        System.out.println("Errore critico nel salvataggio: " + e.getMessage());
+                    }
                     System.out.println("Uscita in corso...");
                     break;
                 default:
