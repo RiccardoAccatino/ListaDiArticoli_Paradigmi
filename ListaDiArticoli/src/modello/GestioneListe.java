@@ -23,51 +23,27 @@ public class GestioneListe {
     private static ArrayList<String> categorie = new ArrayList<>();
 
     /**
-     * Restituisce l'elenco di tutte le liste di articoli gestite.
-     * @return ArrayList di ListaDiArticoli.
+     * Restituisce una copia dell'elenco di tutte le liste di articoli gestite.
+     * @return ArrayList di ListaDiArticoli (copia difensiva).
      */
 	public static ArrayList<ListaDiArticoli> getListediarticoli() {
-        return listediarticoli;
+        return new ArrayList<>(listediarticoli);
     }
 
     /**
-     * Imposta l'elenco delle liste di articoli.
-     * @param listediarticoli La nuova lista di liste.
-     */
-    public static void setListediarticoli(ArrayList<ListaDiArticoli> listediarticoli) {
-        GestioneListe.listediarticoli = listediarticoli;
-    }
-
-    /**
-     * Restituisce il catalogo globale degli articoli.
-     * @return ArrayList di Articolo.
+     * Restituisce una copia del catalogo globale degli articoli.
+     * @return ArrayList di Articolo (copia difensiva).
      */
     public static ArrayList<Articolo> getArticoli() {
-        return articoli;
+        return new ArrayList<>(articoli);
     }
 
     /**
-     * Imposta il catalogo globale degli articoli.
-     * @param articoli La nuova lista di articoli del catalogo.
-     */
-    public static void setArticoli(ArrayList<Articolo> articoli) {
-        GestioneListe.articoli = articoli;
-    }
-
-    /**
-     * Restituisce l'elenco delle categorie disponibili.
-     * @return ArrayList di Stringhe rappresentanti le categorie.
+     * Restituisce una copia dell'elenco delle categorie disponibili.
+     * @return ArrayList di Stringhe rappresentanti le categorie (copia difensiva).
      */
     public static ArrayList<String> getCategorie() {
-        return categorie;
-    }
-
-    /**
-     * Imposta l'elenco delle categorie disponibili.
-     * @param categorie La nuova lista di categorie.
-     */
-    public static void setCategorie(ArrayList<String> categorie) {
-        GestioneListe.categorie = categorie;
+        return new ArrayList<>(categorie);
     }
 
     /**
@@ -79,14 +55,12 @@ public class GestioneListe {
         if (nome == null || nome.trim().isEmpty()) {
             throw new GestioneListeException("Il nome della lista non può essere vuoto.");
         }
-        
         for (ListaDiArticoli lista : listediarticoli) {
             if (lista.getNome().equals(nome)) {
                 throw new GestioneListeException("Esiste già una lista con il nome: " + nome);
             }
         }
-        ListaDiArticoli temp = new ListaDiArticoli(nome);
-        listediarticoli.add(temp);
+        listediarticoli.add(new ListaDiArticoli(nome));
     }
 
     /**
@@ -95,19 +69,8 @@ public class GestioneListe {
      * @throws GestioneListeException Se la lista non viene trovata.
      */
     public static void removeListaDiArticoli(String nome) throws GestioneListeException {
-        boolean trovato = false;
-        Iterator<ListaDiArticoli> iterator = listediarticoli.iterator();
-        
-        while (iterator.hasNext()) {
-            ListaDiArticoli lista = iterator.next();
-            if (lista.getNome().equals(nome)) {
-                iterator.remove();
-                trovato = true;
-                break;
-            }
-        }
-
-        if (trovato==false) {
+        boolean rimosso = listediarticoli.removeIf(lista -> lista.getNome().equals(nome));
+        if (!rimosso) {
             throw new GestioneListeException("Impossibile rimuovere: Lista non trovata (" + nome + ")");
         }
     }
@@ -121,7 +84,6 @@ public class GestioneListe {
         if (nome == null || nome.trim().isEmpty()) {
             throw new GestioneListeException("Il nome della categoria non può essere vuoto.");
         }
-        
         for (String ctg : categorie) {
             if (ctg.equalsIgnoreCase(nome)) {
                 throw new GestioneListeException("Esiste già una categoria con il nome: " + nome);
@@ -136,19 +98,7 @@ public class GestioneListe {
      * @throws GestioneListeException Se la categoria non viene trovata.
      */
     public static void removeCategoria(String nome) throws GestioneListeException {
-        boolean trovato = false;
-        Iterator<String> iterator = categorie.iterator();
-        
-        while (iterator.hasNext()) {
-            String ctg = iterator.next();
-            if (ctg.equals(nome)) {
-                iterator.remove();
-                trovato = true;
-                break;
-            }
-        }
-
-        if (trovato==false) {
+        if (!categorie.remove(nome)) {
             throw new GestioneListeException("Impossibile rimuovere: Categoria non trovata (" + nome + ")");
         }
     }
@@ -165,38 +115,23 @@ public class GestioneListe {
                 throw new GestioneListeException("Esiste già un articolo nel catalogo con questo nome: " + nome);
             }
         }
-        
-        Articolo art = new Articolo(nome);
-        articoli.add(art);
+        articoli.add(new Articolo(nome));
     }
 
     /**
      * Rimuove un articolo dal catalogo globale.
      * @param nome Il nome dell'articolo da rimuovere.
-     * @throws GestioneListeException Se l'articolo non viene trovato nel catalogo.
+     * @throws GestioneListeException Se l'articolo non viene trovata.
      */
     public static void removeArticolo(String nome) throws GestioneListeException {
-        boolean trovato = false;
-        Iterator<Articolo> iterator = articoli.iterator();
-
-        while (iterator.hasNext()) {
-            Articolo art = iterator.next();
-            if (art.getNome().equals(nome)) {
-                iterator.remove();
-                trovato = true;
-                break;
-            }
-        }
-
-        if (trovato==false) {
+        boolean rimosso = articoli.removeIf(art -> art.getNome().equals(nome));
+        if (!rimosso) {
             throw new GestioneListeException("Impossibile rimuovere: Articolo non trovato nel catalogo (" + nome + ")");
         }
     }
     
     /**
-     * Salva l'intero stato dell'applicazione (liste, catalogo, categorie) su un file.
-     * @param percorsoFile Il percorso del file di destinazione (es. "dati.bin").
-     * @throws IOException Se si verifica un errore durante la scrittura del file.
+     * Salva l'intero stato dell'applicazione su file.
      */
     public static void salvaDati(String percorsoFile) throws IOException {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(percorsoFile))) {
@@ -207,10 +142,7 @@ public class GestioneListe {
     }
 
     /**
-     * Carica lo stato dell'applicazione da un file precedentemente salvato.
-     * @param percorsoFile Il percorso del file da leggere.
-     * @throws IOException Se c'è un errore di lettura.
-     * @throws ClassNotFoundException Se la classe degli oggetti serializzati non viene trovata.
+     * Carica lo stato dell'applicazione da file.
      */
     @SuppressWarnings("unchecked")
     public static void caricaDati(String percorsoFile) throws IOException, ClassNotFoundException {

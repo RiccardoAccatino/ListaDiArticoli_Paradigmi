@@ -1,27 +1,42 @@
 package modello.test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import modello.Articolo;
 import modello.GestioneListe;
+import modello.ListaDiArticoli;
 import modello.exception.ArticoloException;
 import modello.exception.GestioneListeException;
 
 /**
  * Classe di test JUnit per la classe {@link GestioneListe}.
  * Verifica le operazioni globali su liste, categorie e catalogo.
+ * Adattata per rispettare il nuovo incapsulamento (assenza di setter statici).
  */
 class GestioneListeTest {
 
     /**
-     * Prepara l'ambiente di test resettando le liste statiche.
+     * Prepara l'ambiente di test svuotando le liste.
+     * Poiché i setter statici sono stati rimossi per sicurezza, 
+     * usiamo i metodi di rimozione per pulire lo stato.
      */
     @BeforeEach
-    void setUp() {
-        GestioneListe.setListediarticoli(new ArrayList<>());
-        GestioneListe.setArticoli(new ArrayList<>());
-        GestioneListe.setCategorie(new ArrayList<>());
+    void setUp() throws GestioneListeException {
+        // Svuota Liste
+        for (ListaDiArticoli l : GestioneListe.getListediarticoli()) {
+            GestioneListe.removeListaDiArticoli(l.getNome());
+        }
+        
+        // Svuota Categorie
+        for (String c : GestioneListe.getCategorie()) {
+            GestioneListe.removeCategoria(c);
+        }
+        
+        // Svuota Catalogo Articoli
+        for (Articolo a : GestioneListe.getArticoli()) {
+            GestioneListe.removeArticolo(a.getNome());
+        }
     }
 
     /**
@@ -32,6 +47,7 @@ class GestioneListeTest {
     void testCreateListaDiArticoli() throws GestioneListeException {
         GestioneListe.createListaDiArticoli("Lista Vacanze");
         assertEquals(1, GestioneListe.getListediarticoli().size());
+        // Nota: usiamo get(0) sulla copia restituita
         assertEquals("Lista Vacanze", GestioneListe.getListediarticoli().get(0).getNome());
     }
 
@@ -42,7 +58,6 @@ class GestioneListeTest {
     @Test
     void testCreateListaDuplicata() throws GestioneListeException {
         GestioneListe.createListaDiArticoli("Lista Spesa");
-     
         assertThrows(GestioneListeException.class, () -> GestioneListe.createListaDiArticoli("Lista Spesa"));
     }
 
@@ -97,5 +112,19 @@ class GestioneListeTest {
     void testCreateArticoloCatalogoDuplicato() throws ArticoloException, GestioneListeException {
         GestioneListe.createArticolo("Mouse");
         assertThrows(GestioneListeException.class, () -> GestioneListe.createArticolo("Mouse"));
+    }
+    
+    /**
+     * Test che verifica l'incapsulamento: modificare la lista ottenuta col getter
+     * non deve modificare la lista interna di GestioneListe.
+     */
+    @Test
+    void testIncapsulamento() {
+        // Otteniamo la lista (che ora è una copia)
+        var categorie = GestioneListe.getCategorie();
+        categorie.add("Categoria Fake");
+        
+        // La lista interna non deve essere cambiata
+        assertEquals(0, GestioneListe.getCategorie().size());
     }
 }

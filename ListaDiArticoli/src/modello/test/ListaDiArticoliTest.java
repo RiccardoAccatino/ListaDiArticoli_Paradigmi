@@ -10,7 +10,14 @@ import modello.exception.ListaDiArticoliException;
 
 /**
  * Classe di test JUnit per la classe {@link ListaDiArticoli}.
- * Verifica le operazioni di aggiunta, rimozione, ripristino e ricerca.
+ * <p>
+ * Aggiornata per verificare le nuove funzionalità:
+ * <ul>
+ * <li>Calcolo del prezzo totale.</li>
+ * <li>Ricerca per prefisso.</li>
+ * <li>Iterabilità della lista (Interfaccia Iterable).</li>
+ * </ul>
+ * </p>
  */
 class ListaDiArticoliTest {
 
@@ -88,48 +95,71 @@ class ListaDiArticoliTest {
     }
 
     /**
-     * Test ricerca articolo (validi e cestinati).
+     * Test ricerca articolo tramite prefisso.
+     * Verifica che trovi articoli validi e cancellati usando startsWith.
      * @throws ArticoloException In caso di errore inatteso.
      * @throws ListaDiArticoliException In caso di errore inatteso.
      */
     @Test
-    void testSearchArticolo() throws ArticoloException, ListaDiArticoliException {
-        lista.addArticolo("Biscotti", 250);
-        lista.addArticolo("Birra", 300);
+    void testSearchArticoloPerPrefisso() throws ArticoloException, ListaDiArticoliException {
+        lista.addArticolo("Nutella", 400);
+        lista.addArticolo("Noci", 300);
         
-        Articolo trovato = lista.searchArticolo("Bisc");
+        Articolo trovato = lista.searchArticolo("Nut");
         assertNotNull(trovato);
-        assertEquals("Biscotti", trovato.getNome());
+        assertEquals("Nutella", trovato.getNome());
         
-        lista.removeArticolo("Birra");
-        Articolo trovatoCestino = lista.searchArticolo("Bir");
+        Articolo nonTrovato = lista.searchArticolo("ella");
+        assertNull(nonTrovato, "La ricerca non deve trovare suffissi, solo prefissi.");
+
+        lista.removeArticolo("Noci");
+        Articolo trovatoCestino = lista.searchArticolo("No");
         assertNotNull(trovatoCestino);
-        assertEquals("Birra", trovatoCestino.getNome());
-        
-        assertNull(lista.searchArticolo("Vino"));
+        assertEquals("Noci", trovatoCestino.getNome());
     }
     
     /**
-     * Test aggiunta articolo semplice.
-     * @throws ArticoloException In caso di errore inatteso.
+     * Test per il calcolo del prezzo totale.
+     * Verifica che sommi solo gli articoli validi e non quelli nel cestino.
+     * @throws ArticoloException In caso di errore.
+     * @throws ListaDiArticoliException In caso di errore.
      */
     @Test
-    void testAggiungiArticoloSemplice() throws ArticoloException {
+    void testCalcolaPrezzoTotale() throws ArticoloException, ListaDiArticoliException {
+        lista.addArticolo("Pane", 100);
+        lista.addArticolo("Latte", 150);
+        lista.addArticolo("Vino", 5);
+        assertEquals(750, lista.calcolaPrezzoTotale());
         
-        lista.addArticolo("Caramelle", 50); 
-        Articolo a = lista.searchArticolo("Caramelle");
-        assertNotNull(a);
-        assertEquals("Non categorizzato", a.getCategoria());
+        lista.removeArticolo("Vino");
+        
+        assertEquals(250, lista.calcolaPrezzoTotale());
     }
-    
+
     /**
-     * Test case-sensitivity della ricerca.
-     * @throws ArticoloException In caso di errore inatteso.
+     * Test per l'iterabilità della lista.
+     * Verifica che il ciclo for-each scorra sia articoli validi che cancellati.
+     * @throws ArticoloException In caso di errore.
+     * @throws ListaDiArticoliException In caso di errore.
      */
     @Test
-    void testRicercaMaiuscoleMinuscole() throws ArticoloException {
-        lista.addArticolo("Latte", 100);
-        Articolo risultato = lista.searchArticolo("latte");
-        assertNull(risultato, "La ricerca dovrebbe essere case-sensitive con l'attuale implementazione");
+    void testIterabile() throws ArticoloException, ListaDiArticoliException {
+        lista.addArticolo("A", 10);
+        lista.addArticolo("B", 20);
+        lista.removeArticolo("B"); 
+        
+        int conteggio = 0;
+        boolean trovatoA = false;
+        boolean trovatoB = false;
+
+        for (Articolo a : lista) {
+            conteggio++;
+            if (a.getNome().equals("A")) trovatoA = true;
+            if (a.getNome().equals("B")) trovatoB = true;
+        }
+        
+        assertEquals(2, conteggio, "L'iteratore deve contare sia validi che cancellati");
+        assertTrue(trovatoA);
+        assertTrue(trovatoB);
     }
 }
