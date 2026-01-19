@@ -1,0 +1,8 @@
+gui.grafica.controllo
+gui.grafica.vista
+gui.riga_comando
+jbook.util
+main
+modello
+modello.exception
+modello.test

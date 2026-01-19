@@ -5,8 +5,17 @@ import javax.swing.JPanel;
 
 import gui.grafica.controllo.Controller;
 import modello.ListaDiArticoli;
+
+/**
+ * Finestra specifica per la gestione di una lista aperta dal Menu Principale.
+ * A differenza di FinestraPrincipale, questa non chiude l'intera applicazione alla chiusura.
+ */
 public class SchermataLista extends JFrame {
 
+    /**
+     * Costruisce la schermata di dettaglio della lista.
+     * @param lista La lista di articoli da visualizzare e modificare.
+     */
     public SchermataLista(ListaDiArticoli lista) {
         setTitle("Dettaglio Lista: " + lista.getNome());
 

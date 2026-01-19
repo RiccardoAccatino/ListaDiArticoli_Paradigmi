@@ -13,11 +13,12 @@ import modello.GestioneListe;
 import modello.ListaDiArticoli;
 import modello.exception.ArticoloException;
 import modello.exception.ListaDiArticoliException;
+
 /**
  * Gestisce le interazioni dell'utente provenienti dall'interfaccia grafica (View)
  * e aggiorna di conseguenza il modello dei dati (Model).
  * <p>
- * Implementa {@link ActionListener} per catturare i click sui pulsanti del {@link PannelloComandi}.
+ * Implementa {@link ActionListener} per catturare i click sui pulsanti del {@link gui.grafica.vista.PannelloComandi}.
  * </p>
  */
 public class Controller implements ActionListener {
@@ -25,6 +26,11 @@ public class Controller implements ActionListener {
     private ListaDiArticoli model;
     private PannelloContenuto view;
 
+    /**
+     * Costruttore del Controller.
+     * @param model Il modello dati da gestire (la lista di articoli).
+     * @param view La vista da aggiornare dopo le operazioni.
+     */
     public Controller(ListaDiArticoli model, PannelloContenuto view) {
         this.model = model;
         this.view = view;
@@ -42,7 +48,7 @@ public class Controller implements ActionListener {
     * <li><b>SVUOTA:</b> Elimina definitivamente gli oggetti nel cestino.</li>
     * </ul>
     * </p>
-    * * @param e L'evento che ha scatenato la chiamata.
+    * @param e L'evento che ha scatenato la chiamata.
     */
     @Override
     public void actionPerformed(ActionEvent e) {

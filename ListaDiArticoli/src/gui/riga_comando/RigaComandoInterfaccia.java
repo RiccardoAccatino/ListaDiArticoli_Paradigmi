@@ -8,6 +8,7 @@ import modello.ListaDiArticoli;
 import modello.exception.ArticoloException;
 import modello.exception.GestioneListeException;
 import modello.exception.ListaDiArticoliException;
+
 /**
  * Fornisce un'interfaccia a riga di comando (CLI) per interagire con l'applicazione
  * senza l'uso di finestre grafiche.
@@ -19,6 +20,9 @@ public class RigaComandoInterfaccia {
     private Input input;
     private static final String FILE_DATI = "dati_save.bin";
 
+    /**
+     * Costruttore che inizializza l'interfaccia, carica i dati e avvia il menu.
+     */
     public RigaComandoInterfaccia() {
         input = new Input();
         try {
@@ -32,6 +36,9 @@ public class RigaComandoInterfaccia {
         avviaMenuPrincipale(); 
     }
 
+    /**
+     * Mostra e gestisce il ciclo del menu principale testuale.
+     */
     private void avviaMenuPrincipale() {
         int sc = 0;
         do {
@@ -86,6 +93,9 @@ public class RigaComandoInterfaccia {
         } while (sc != 5);
     }
 
+    /**
+     * Gestisce la logica per la creazione di una nuova lista.
+     */
     private void creazioneLista() {
         String nome = Input.readString("Inserisci il nome della lista che desideri creare: ");
         try {
@@ -96,6 +106,9 @@ public class RigaComandoInterfaccia {
         }
     }
 
+    /**
+     * Gestisce la selezione di una lista esistente e passa il controllo al menu della lista.
+     */
     private void selezionaEGestisciLista() {
         String nomeLis = Input.readString("Inserisci il nome della lista che desideri selezionare: ");
         ListaDiArticoli listaSelezionata = trovaLista(nomeLis);
@@ -105,6 +118,10 @@ public class RigaComandoInterfaccia {
         }
     }
 
+    /**
+     * Mostra e gestisce il ciclo del menu operativo per una specifica lista.
+     * @param lista La lista su cui operare.
+     */
     private void menuOperazioniLista(ListaDiArticoli lista) {
         int sc = 0;
         do {
@@ -160,6 +177,10 @@ public class RigaComandoInterfaccia {
         } while (sc != 8);
     }
     
+    /**
+     * Gestisce la modifica di un articolo presente nella lista.
+     * @param lista La lista contenente l'articolo.
+     */
     private void modificaArticolo(ListaDiArticoli lista) {
         String nomeRicerca = Input.readString("Inserisci il nome dell'articolo da modificare: ");
         Articolo art = lista.searchArticolo(nomeRicerca);
@@ -205,6 +226,9 @@ public class RigaComandoInterfaccia {
         }
     }
 
+    /**
+     * Gestisce l'aggiunta di una nuova categoria.
+     */
     private void aggiuntaCategoria() {
         String nome = Input.readString("Inserisci il nome della categoria che desideri creare: ");
         try {
@@ -215,6 +239,10 @@ public class RigaComandoInterfaccia {
         }
     }
 
+    /**
+     * Gestisce l'aggiunta di un prodotto al catalogo globale.
+     * @throws ArticoloException Se i dati del prodotto non sono validi.
+     */
     private void aggiuntaProdottoCatalogo() throws ArticoloException {
         String nome = Input.readString("Inserisci il nome del prodotto per il catalogo: ");
         try {
@@ -225,6 +253,10 @@ public class RigaComandoInterfaccia {
         }
     }
 
+    /**
+     * Chiede conferma e svuota il cestino della lista.
+     * @param lista La lista di cui svuotare il cestino.
+     */
     private void svuotaCesto(ListaDiArticoli lista) {
         String conferma = Input.readString("Sei sicuro di voler svuotare il cestino? (s/n): ");
         if (conferma.equalsIgnoreCase("s")) {
@@ -235,6 +267,10 @@ public class RigaComandoInterfaccia {
         }
     }
 
+    /**
+     * Gestisce il ripristino di un articolo dal cestino.
+     * @param lista La lista corrente.
+     */
     private void ripristinaProdotto(ListaDiArticoli lista) {
         String nomeArticolo = Input.readString("Inserisci il nome dell'articolo da ripristinare: ");
         try {
@@ -245,6 +281,10 @@ public class RigaComandoInterfaccia {
         }
     }
 
+    /**
+     * Sposta un articolo dalla lista valida al cestino.
+     * @param lista La lista corrente.
+     */
     private void spostaProdottoDallaLista(ListaDiArticoli lista) {
         String nomeArticolo = Input.readString("Inserisci il nome dell'articolo da cestinare: ");
         try {
@@ -255,6 +295,10 @@ public class RigaComandoInterfaccia {
         }
     }
 
+    /**
+     * Cerca un prodotto nella lista e ne stampa i dettagli.
+     * @param lista La lista in cui cercare.
+     */
     private void cercaProdottoNellaLista(ListaDiArticoli lista) {
         String ricerca = Input.readString("Inserisci il nome (o parte del nome) da cercare: ");
         Articolo trovato = lista.searchArticolo(ricerca);
@@ -266,6 +310,10 @@ public class RigaComandoInterfaccia {
         }
     }
     
+    /**
+     * Visualizza a schermo l'elenco degli articoli validi e cancellati.
+     * @param lista La lista da visualizzare.
+     */
     private void visualizzaContenutoLista(ListaDiArticoli lista) {
         System.out.println("\n*** CONTENUTO DELLA LISTA: " + lista.getNome() + " ***");
         
@@ -293,6 +341,10 @@ public class RigaComandoInterfaccia {
         System.out.println("**************************************************");
     }
 
+    /**
+     * Aggiunge un prodotto alla lista corrente.
+     * @param lista La lista a cui aggiungere il prodotto.
+     */
     private void aggiungiProdottoAllaLista(ListaDiArticoli lista) {
         String prd = Input.readString("Inserisci il nome del prodotto che vuoi aggiungere alla lista: ");
         try {
@@ -303,6 +355,11 @@ public class RigaComandoInterfaccia {
         }
     }
 
+    /**
+     * Cerca una lista per nome all'interno del gestore liste.
+     * @param nomeLista Il nome della lista da cercare.
+     * @return L'oggetto ListaDiArticoli se trovato, altrimenti null.
+     */
     private ListaDiArticoli trovaLista(String nomeLista) {
         for (ListaDiArticoli lista : GestioneListe.getListediarticoli()) {
             if (lista.getNome().equals(nomeLista)) {

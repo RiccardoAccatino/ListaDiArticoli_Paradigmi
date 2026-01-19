@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"gui.grafica.controllo"},{"l":"gui.grafica.vista"},{"l":"gui.riga_comando"},{"l":"jbook.util"},{"l":"main"},{"l":"modello"},{"l":"modello.exception"},{"l":"modello.test"}];updateSearchResults();

@@ -11,12 +11,20 @@ import javax.swing.SwingConstants;
 
 import modello.ListaDiArticoli;
 import modello.Articolo;
+
+/**
+ * Pannello grafico che visualizza il contenuto testuale della lista di articoli e il totale parziale.
+ */
 public class PannelloContenuto extends JPanel {
     
     private ListaDiArticoli model;
     private JTextArea areaTesto;
     private JLabel labelTotale;
 
+    /**
+     * Costruisce il pannello per visualizzare i contenuti della lista.
+     * @param model Il modello dati da visualizzare.
+     */
     public PannelloContenuto(ListaDiArticoli model) {
         this.model = model;
         setLayout(new BorderLayout());
@@ -39,6 +47,10 @@ public class PannelloContenuto extends JPanel {
         updateView();
     }
 
+    /**
+     * Aggiorna la vista recuperando i dati più recenti dal modello.
+     * Ricalcola il totale e rigenera l'elenco testuale degli articoli.
+     */
     public void updateView() {
         StringBuilder sb = new StringBuilder();
         int prezzoTotale = 0;

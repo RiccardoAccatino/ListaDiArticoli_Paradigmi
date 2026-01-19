@@ -28,12 +28,19 @@ import modello.ListaDiArticoli;
 import modello.exception.ArticoloException;
 import modello.exception.GestioneListeException;
 
+/**
+ * Finestra principale dell'applicazione GUI.
+ * Permette di creare, eliminare e aprire liste, oltre a gestire il catalogo globale.
+ */
 public class MenuPrincipale extends JFrame implements ActionListener {
 
     private DefaultListModel<String> listModel;
     private JList<String> listaGrafica;
     private static final String FILE_DATI = "dati_save.bin";
 
+    /**
+     * Costruisce e visualizza il menu principale.
+     */
     public MenuPrincipale() {
         setTitle("Gestione Liste - Menu Principale");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -95,6 +102,9 @@ public class MenuPrincipale extends JFrame implements ActionListener {
         setVisible(true);
     }
     
+    /**
+     * Salva i dati su file e termina l'applicazione.
+     */
     private void salvaEdEsci() {
         try {
             GestioneListe.salvaDati(FILE_DATI);
@@ -107,6 +117,9 @@ public class MenuPrincipale extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Aggiorna la JList grafica con l'elenco delle liste presenti nel modello.
+     */
     private void aggiornaElencoListe() {
         listModel.clear();
         if(GestioneListe.getListediarticoli() != null) {
@@ -116,6 +129,10 @@ public class MenuPrincipale extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Gestisce gli eventi dei pulsanti del menu principale.
+     * @param e L'evento generato.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
@@ -151,6 +168,9 @@ public class MenuPrincipale extends JFrame implements ActionListener {
         }
     }
     
+    /**
+     * Apre la finestra di dettaglio per la lista selezionata.
+     */
     private void apriListaSelezionata() {
         String nomeSelezionato = listaGrafica.getSelectedValue();
         if (nomeSelezionato == null) {
@@ -165,7 +185,10 @@ public class MenuPrincipale extends JFrame implements ActionListener {
         }
     }
 
-    
+    /**
+     * Elimina la lista selezionata dopo conferma dell'utente.
+     * @throws GestioneListeException Se ci sono errori durante la rimozione.
+     */
     private void eliminaListaSelezionata() throws GestioneListeException {
         String nomeSelezionato = listaGrafica.getSelectedValue();
         
@@ -190,6 +213,11 @@ public class MenuPrincipale extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Apre un dialog complesso per la creazione di un nuovo prodotto nel catalogo.
+     * @throws GestioneListeException Se ci sono errori nel gestore liste.
+     * @throws ArticoloException Se i dati inseriti per l'articolo non sono validi.
+     */
     private void creaProdottoCompleto() throws GestioneListeException, ArticoloException {
         ArrayList<String> categorie = GestioneListe.getCategorie();
         if (categorie.isEmpty()) {

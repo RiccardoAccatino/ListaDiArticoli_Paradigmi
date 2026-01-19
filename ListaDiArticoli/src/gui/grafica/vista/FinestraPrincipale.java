@@ -5,7 +5,16 @@ import javax.swing.JPanel;
 
 import gui.grafica.controllo.Controller;
 import modello.ListaDiArticoli;
+
+/**
+ * Finestra principale generica per la gestione di una singola lista (Versione standalone).
+ */
 public class FinestraPrincipale extends JFrame{
+    
+    /**
+     * Costruisce la finestra principale.
+     * @param model Il modello della lista da gestire.
+     */
 	public FinestraPrincipale(ListaDiArticoli model) {
         setTitle("Gestione Lista: " + model.getNome());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

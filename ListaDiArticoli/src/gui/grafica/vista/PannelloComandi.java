@@ -4,8 +4,16 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import gui.grafica.controllo.Controller;
 
+/**
+ * Pannello che contiene i pulsanti di controllo per gestire la lista degli articoli.
+ * Invia le azioni al Controller.
+ */
 public class PannelloComandi extends JPanel {
 
+    /**
+     * Costruisce il pannello comandi e inizializza i bottoni.
+     * @param controllore Il controller che gestirà le azioni dei pulsanti.
+     */
     public PannelloComandi(Controller controllore) {
         setLayout(new FlowLayout());
 

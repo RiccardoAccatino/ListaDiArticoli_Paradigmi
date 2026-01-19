@@ -8,15 +8,26 @@ import modello.ListaDiArticoli;
 import modello.exception.ArticoloException;
 import modello.exception.ListaDiArticoliException;
 
+/**
+ * Classe di test JUnit per la classe {@link ListaDiArticoli}.
+ * Verifica le operazioni di aggiunta, rimozione, ripristino e ricerca.
+ */
 class ListaDiArticoliTest {
 
     private ListaDiArticoli lista;
 
+    /**
+     * Inizializza una lista vuota prima di ogni test.
+     */
     @BeforeEach
     void setUp() {
         lista = new ListaDiArticoli("Spesa Settimanale");
     }
 
+    /**
+     * Test aggiunta articolo.
+     * @throws ArticoloException In caso di errore inatteso.
+     */
     @Test
     void testAggiungiArticolo() throws ArticoloException {
         lista.addArticolo("Uova", 300);
@@ -24,6 +35,11 @@ class ListaDiArticoliTest {
         assertEquals(0, lista.getNumeroArticoliCancellati());
     }
 
+    /**
+     * Test rimozione articolo (spostamento nel cestino).
+     * @throws ArticoloException In caso di errore inatteso.
+     * @throws ListaDiArticoliException In caso di errore inatteso.
+     */
     @Test
     void testRimuoviArticolo() throws ArticoloException, ListaDiArticoliException {
         lista.addArticolo("Latte", 150);
@@ -33,11 +49,19 @@ class ListaDiArticoliTest {
         assertEquals(1, lista.getNumeroArticoliCancellati());
     }
 
+    /**
+     * Test rimozione di un articolo inesistente.
+     */
     @Test
     void testRimuoviArticoloInesistente() {
         assertThrows(ListaDiArticoliException.class, () -> lista.removeArticolo("NonEsiste"));
     }
 
+    /**
+     * Test ripristino articolo dal cestino.
+     * @throws ArticoloException In caso di errore inatteso.
+     * @throws ListaDiArticoliException In caso di errore inatteso.
+     */
     @Test
     void testRipristinaArticolo() throws ArticoloException, ListaDiArticoliException {
         lista.addArticolo("Pane", 200);
@@ -48,6 +72,11 @@ class ListaDiArticoliTest {
         assertEquals(0, lista.getNumeroArticoliCancellati());
     }
     
+    /**
+     * Test svuotamento cestino.
+     * @throws ArticoloException In caso di errore inatteso.
+     * @throws ListaDiArticoliException In caso di errore inatteso.
+     */
     @Test
     void testSvuotaCestino() throws ArticoloException, ListaDiArticoliException {
         lista.addArticolo("Acqua", 100);
@@ -58,6 +87,11 @@ class ListaDiArticoliTest {
         assertEquals(0, lista.getNumeroArticoliValidi());
     }
 
+    /**
+     * Test ricerca articolo (validi e cestinati).
+     * @throws ArticoloException In caso di errore inatteso.
+     * @throws ListaDiArticoliException In caso di errore inatteso.
+     */
     @Test
     void testSearchArticolo() throws ArticoloException, ListaDiArticoliException {
         lista.addArticolo("Biscotti", 250);
@@ -75,6 +109,10 @@ class ListaDiArticoliTest {
         assertNull(lista.searchArticolo("Vino"));
     }
     
+    /**
+     * Test aggiunta articolo semplice.
+     * @throws ArticoloException In caso di errore inatteso.
+     */
     @Test
     void testAggiungiArticoloSemplice() throws ArticoloException {
         
@@ -84,6 +122,10 @@ class ListaDiArticoliTest {
         assertEquals("Non categorizzato", a.getCategoria());
     }
     
+    /**
+     * Test case-sensitivity della ricerca.
+     * @throws ArticoloException In caso di errore inatteso.
+     */
     @Test
     void testRicercaMaiuscoleMinuscole() throws ArticoloException {
         lista.addArticolo("Latte", 100);
