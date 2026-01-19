@@ -60,4 +60,4 @@ Il codice è organizzato nei seguenti package:
 
 ## 👤 Autore
 
-Progetto sviluppato da [Il Tuo Nome] per il corso di Paradigmi di Programmazione.
+Progetto sviluppato da Riccarardo Accatino per il corso di Paradigmi di Programmazione.
