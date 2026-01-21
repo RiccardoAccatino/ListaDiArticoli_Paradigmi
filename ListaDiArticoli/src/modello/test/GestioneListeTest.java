@@ -23,17 +23,17 @@ class GestioneListeTest {
      */
     @BeforeEach
     void setUp() throws GestioneListeException {
-        // Svuota Liste
+        
         for (ListaDiArticoli l : GestioneListe.getListediarticoli()) {
             GestioneListe.removeListaDiArticoli(l.getNome());
         }
         
-        // Svuota Categorie
+        
         for (String c : GestioneListe.getCategorie()) {
             GestioneListe.removeCategoria(c);
         }
         
-        // Svuota Catalogo Articoli
+       
         for (Articolo a : GestioneListe.getArticoli()) {
             GestioneListe.removeArticolo(a.getNome());
         }
@@ -47,7 +47,7 @@ class GestioneListeTest {
     void testCreateListaDiArticoli() throws GestioneListeException {
         GestioneListe.createListaDiArticoli("Lista Vacanze");
         assertEquals(1, GestioneListe.getListediarticoli().size());
-        // Nota: usiamo get(0) sulla copia restituita
+        
         assertEquals("Lista Vacanze", GestioneListe.getListediarticoli().get(0).getNome());
     }
 
@@ -120,11 +120,11 @@ class GestioneListeTest {
      */
     @Test
     void testIncapsulamento() {
-        // Otteniamo la lista (che ora è una copia)
+      
         var categorie = GestioneListe.getCategorie();
         categorie.add("Categoria Fake");
         
-        // La lista interna non deve essere cambiata
+        
         assertEquals(0, GestioneListe.getCategorie().size());
     }
 }
