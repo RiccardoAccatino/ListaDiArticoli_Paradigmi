@@ -69,7 +69,7 @@ public class SchermataLista extends JPanel {
             String nome = JOptionPane.showInputDialog(this, "Nome articolo rapido:");
             if (nome != null && !nome.isEmpty()) {
                 try {
-                    listaCorrente.addArticolo(nome, 100);
+                    listaCorrente.addArticolo(nome, 0);
                     aggiornaVista();
                 } catch (ArticoloException ex) {
                     JOptionPane.showMessageDialog(this, "Errore: " + ex.getMessage());
