@@ -52,6 +52,7 @@ public class SchermataLista extends JPanel {
 
         JButton btnAggiungiCat = new JButton("Aggiungi da Catalogo");
         JButton btnRimuovi = new JButton("Rimuovi Articolo");
+        JButton btnModifica = new JButton("Modifica Articolo");
         JButton btnRipristina = new JButton("Ripristina Articolo");
         JButton btnSvuota = new JButton("Svuota Cestino");
         JButton btnAggiungiRapido = new JButton("Aggiungi Rapido (Test)");
@@ -60,6 +61,8 @@ public class SchermataLista extends JPanel {
         btnAggiungiCat.addActionListener(e -> aggiungiDaCatalogo());
 
         btnRimuovi.addActionListener(e -> rimuoviArticolo());
+        
+        btnModifica.addActionListener(e -> modificaArticolo());
 
         btnRipristina.addActionListener(e -> ripristinaArticolo());
 
@@ -80,6 +83,7 @@ public class SchermataLista extends JPanel {
         btnAggiorna.addActionListener(e -> aggiornaVista());
 
         panelComandi.add(btnAggiungiCat);
+        panelComandi.add(btnModifica);
         panelComandi.add(btnRimuovi);
         panelComandi.add(btnRipristina);
         panelComandi.add(btnSvuota);
@@ -225,6 +229,86 @@ public class SchermataLista extends JPanel {
             listaCorrente.svuotaCestino();
             aggiornaVista();
             JOptionPane.showMessageDialog(this, "Cestino svuotato.");
+        }
+    }
+    
+    /**
+     * Logica per modificare un articolo esistente (Prezzo, Categoria o Nota).
+     */
+    private void modificaArticolo() {
+        ArrayList<Articolo> validi = listaCorrente.getArticoliValidi();
+        
+        if (validi.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nessun articolo da modificare.");
+            return;
+        }
+
+        Object[] scelteArticoli = new Object[validi.size()];
+        for (int i = 0; i < validi.size(); i++) {
+            scelteArticoli[i] = validi.get(i).getNome();
+        }
+
+        String nomeArticolo = (String) JOptionPane.showInputDialog(this, 
+                "Scegli l'articolo da modificare:", 
+                "Modifica Articolo", 
+                JOptionPane.QUESTION_MESSAGE, 
+                null, 
+                scelteArticoli, 
+                scelteArticoli[0]);
+
+        if (nomeArticolo != null) {
+            Articolo art = listaCorrente.searchArticolo(nomeArticolo);
+            
+            String[] opzioni = {"Prezzo", "Categoria", "Nota"};
+            int sceltaCampo = JOptionPane.showOptionDialog(this, 
+                "Cosa vuoi modificare di '" + art.getNome() + "'?", 
+                "Dettaglio Modifica",
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.QUESTION_MESSAGE, 
+                null, opzioni, opzioni[0]);
+
+            try {
+                int nuovoPrezzo = art.getPrezzo();
+                String nuovaCategoria = art.getCategoria();
+                String nuovaNota = art.getNota();
+                boolean procedi = false;
+
+                switch (sceltaCampo) {
+                    case 0: 
+                        String inputPrezzo = JOptionPane.showInputDialog(this, "Nuovo prezzo (Attuale: " + art.getPrezzo() + "):");
+                        if (inputPrezzo != null) {
+                            nuovoPrezzo = Integer.parseInt(inputPrezzo);
+                            procedi = true;
+                        }
+                        break;
+                    case 1: 
+                         String inputCat = JOptionPane.showInputDialog(this, "Nuova categoria (Attuale: " + art.getCategoria() + "):");
+                         if (inputCat != null) {
+                             nuovaCategoria = inputCat;
+                             procedi = true;
+                         }
+                        break;
+                    case 2: 
+                        String inputNota = JOptionPane.showInputDialog(this, "Nuova nota (Attuale: " + art.getNota() + "):");
+                        if (inputNota != null) {
+                            nuovaNota = inputNota;
+                            procedi = true;
+                        }
+                        break;
+                }
+
+                
+                if (procedi) {
+                    listaCorrente.modificaArticolo(nomeArticolo, nuovoPrezzo, nuovaCategoria, nuovaNota);
+                    aggiornaVista();
+                    JOptionPane.showMessageDialog(this, "Articolo modificato con successo!");
+                }
+                
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Errore: Il prezzo deve essere un numero intero!");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Errore durante la modifica: " + ex.getMessage());
+            }
         }
     }
 
